@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuraHealth AI · Insurance Premium Intelligence</title>
+  <meta name="description" content="Minimalist glassmorphism ML intelligence portal powered by FastAPI and scikit-learn.">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <!-- Ambient Morphing Background Blobs -->
+  <div class="background-canvas">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="container">
+    
+    <!-- Top Navigation Bar -->
+    <header class="navbar glass-panel">
+      <div class="nav-brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <span class="brand-name">AuraHealth · ML Predictor</span>
+      </div>
+      <div class="nav-status">
+        <span class="status-dot" id="apiStatusDot"></span>
+        <span id="apiStatusText">FastAPI Connected</span>
+      </div>
+    </header>
+
+    <!-- Hero Showcase with Morphing Image Card -->
+    <section class="hero-showcase glass-panel">
+      <div class="hero-text">
+        <div class="hero-badges">
+          <span class="badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Real-time Inference
+          </span>
+          <span class="badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            FastAPI + Scikit-Learn
+          </span>
+        </div>
+        <h1>Insurance Premium <span class="gradient-text">Category Predictor</span></h1>
+        <p class="hero-subtitle">
+          Intelligent biometric risk scoring using machine learning. Enter client demographics and lifestyle parameters to calculate premium category in real-time.
+        </p>
+      </div>
+
+      <!-- Morphing Image Showcase Card -->
+      <div class="morph-image-container">
+        <div class="morph-image-card" id="morphCard">
+          <img src="/static/hero.jpg" alt="Health and Insurance Intelligence" id="heroImg">
+          <div class="morph-overlay">
+            <div class="overlay-content">
+              <div>
+                <div class="overlay-title">Biometric Risk Shield</div>
+                <div class="overlay-subtitle">ML Classification Engine</div>
+              </div>
+              <div class="overlay-hud">ACTIVE // v1.0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Interactive Workspace -->
+    <main class="app-grid">
+
+      <!-- Form Section -->
+      <section class="form-card glass-panel">
+        <div class="card-header">
+          <h2 class="card-title">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Client Profile
+          </h2>
+          <p class="card-desc">Configure client biometric parameters and income attributes.</p>
+        </div>
+
+        <form id="predictionForm" onsubmit="event.preventDefault(); handlePredict();">
+          <div class="form-grid">
+            
+            <!-- Age Slider -->
+            <div class="form-group range-group">
+              <div class="form-label">
+                <span>Age</span>
+                <span class="label-hint" id="ageGroupHint">adult</span>
+              </div>
+              <div class="range-inputs">
+                <input type="range" class="range-slider" id="ageSlider" min="1" max="119" value="30">
+                <input type="number" class="number-badge" id="ageInput" min="1" max="119" value="30">
+              </div>
+            </div>
+
+            <!-- Income LPA -->
+            <div class="form-group range-group">
+              <div class="form-label">
+                <span>Annual Income (LPA)</span>
+                <span class="label-hint">₹ Lakhs/Year</span>
+              </div>
+              <div class="range-inputs">
+                <input type="range" class="range-slider" id="incomeSlider" min="0.5" max="100" step="0.5" value="12.0">
+                <input type="number" class="number-badge" id="incomeInput" min="0.1" max="500" step="0.1" value="12.0">
+              </div>
+            </div>
+
+            <!-- Weight -->
+            <div class="form-group range-group">
+              <div class="form-label">
+                <span>Weight (kg)</span>
+                <span class="label-hint">Kilograms</span>
+              </div>
+              <div class="range-inputs">
+                <input type="range" class="range-slider" id="weightSlider" min="20" max="180" step="0.5" value="68.0">
+                <input type="number" class="number-badge" id="weightInput" min="10" max="250" step="0.1" value="68.0">
+              </div>
+            </div>
+
+            <!-- Height -->
+            <div class="form-group range-group">
+              <div class="form-label">
+                <span>Height (m)</span>
+                <span class="label-hint">Meters</span>
+              </div>
+              <div class="range-inputs">
+                <input type="range" class="range-slider" id="heightSlider" min="1.0" max="2.3" step="0.01" value="1.72">
+                <input type="number" class="number-badge" id="heightInput" min="0.5" max="2.49" step="0.01" value="1.72">
+              </div>
+            </div>
+
+            <!-- Smoker Status Toggle -->
+            <div class="form-group">
+              <label class="form-label">Smoking Habit</label>
+              <div class="pill-toggle-container">
+                <div class="pill-option active" id="smokerNo" onclick="setSmoker(false)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                  Non-Smoker
+                </div>
+                <div class="pill-option" id="smokerYes" onclick="setSmoker(true)">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+                  </svg>
+                  Smoker
+                </div>
+              </div>
+            </div>
+
+            <!-- Occupation -->
+            <div class="form-group">
+              <label class="form-label" for="occupation">Occupation</label>
+              <select id="occupation" class="glass-select">
+                <option value="private_job">Private Job</option>
+                <option value="government_job">Government Job</option>
+                <option value="business_owner">Business Owner</option>
+                <option value="freelancer">Freelancer</option>
+                <option value="student">Student</option>
+                <option value="retired">Retired</option>
+                <option value="unemployed">Unemployed</option>
+              </select>
+            </div>
+
+            <!-- City with quick pills -->
+            <div class="form-group full-width">
+              <div class="form-label">
+                <span>City Location</span>
+                <span class="label-hint" id="cityTierHint">Tier 1</span>
+              </div>
+              <input type="text" id="city" class="glass-input" list="citiesList" value="Mumbai" placeholder="Enter or select city...">
+              <datalist id="citiesList">
+                <option value="Mumbai"></option>
+                <option value="Delhi"></option>
+                <option value="Bangalore"></option>
+                <option value="Chennai"></option>
+                <option value="Kolkata"></option>
+                <option value="Hyderabad"></option>
+                <option value="Pune"></option>
+                <option value="Jaipur"></option>
+                <option value="Chandigarh"></option>
+                <option value="Indore"></option>
+                <option value="Lucknow"></option>
+                <option value="Patna"></option>
+                <option value="Ahmedabad"></option>
+                <option value="Noida"></option>
+              </datalist>
+
+              <div class="city-quick-pills">
+                <span class="city-pill active" onclick="selectCity('Mumbai')">Mumbai</span>
+                <span class="city-pill" onclick="selectCity('Delhi')">Delhi</span>
+                <span class="city-pill" onclick="selectCity('Bangalore')">Bangalore</span>
+                <span class="city-pill" onclick="selectCity('Hyderabad')">Hyderabad</span>
+                <span class="city-pill" onclick="selectCity('Pune')">Pune</span>
+                <span class="city-pill" onclick="selectCity('Jaipur')">Jaipur</span>
+                <span class="city-pill" onclick="selectCity('Indore')">Indore</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Live Biometric Insight Bar -->
+          <div class="live-insight-bar">
+            <div class="insight-item">
+              <span class="insight-label">Estimated BMI</span>
+              <span class="insight-val" id="liveBmi">22.99</span>
+            </div>
+            <div class="insight-item">
+              <span class="insight-label">BMI Category</span>
+              <span class="insight-chip chip-normal" id="liveBmiChip">Normal</span>
+            </div>
+            <div class="insight-item">
+              <span class="insight-label">Lifestyle Risk</span>
+              <span class="insight-val" id="liveRisk" style="font-size: 0.95rem; color: var(--accent-emerald);">Low</span>
+            </div>
+            <div class="insight-item">
+              <span class="insight-label">City Tier</span>
+              <span class="insight-val" id="liveTier">Tier 1</span>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span id="btnText">Calculate Premium Category</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </form>
+      </section>
+
+      <!-- Results Display Section -->
+      <section class="results-card glass-panel" id="resultsPanel">
+        <div class="card-header">
+          <h2 class="card-title">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-violet)" stroke-width="2">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+            </svg>
+            Risk Intelligence
+          </h2>
+          <p class="card-desc">Machine Learning evaluation and classification report.</p>
+        </div>
+
+        <!-- Standby / Idle State -->
+        <div class="standby-state" id="standbyState">
+          <div class="standby-radar">
+            <div class="radar-dot"></div>
+          </div>
+          <h3 class="standby-title">Awaiting Input Parameters</h3>
+          <p class="standby-desc">Configure your client details on the left and trigger prediction to generate insurance risk tier.</p>
+        </div>
+
+        <!-- Active Prediction Output State -->
+        <div class="prediction-active" id="activeState">
+          
+          <div class="hero-prediction-badge badge-medium" id="predictionBadge">
+            <div class="tier-caption">Predicted Premium Category</div>
+            <div class="tier-value" id="categoryValue">Medium</div>
+            <p class="tier-desc" id="categoryDescription">Balanced premium tier based on biometric stability and lifestyle factors.</p>
+          </div>
+
+          <div class="metrics-grid">
+            <div class="metric-box">
+              <div class="metric-title">Computed BMI</div>
+              <div class="metric-number" id="resultBmi">24.50</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-title">Age Segment</div>
+              <div class="metric-number" id="resultAgeGroup">Adult</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-title">Lifestyle Risk</div>
+              <div class="metric-number" id="resultRisk">Low</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-title">Location Tier</div>
+              <div class="metric-number" id="resultTier">Tier 1</div>
+            </div>
+          </div>
+
+          <div class="card-header" style="margin-top: 10px; margin-bottom: 8px;">
+            <div class="card-desc" style="display: flex; justify-content: space-between;">
+              <span>FastAPI Raw Payload</span>
+              <span style="color: var(--accent-cyan); font-size: 0.75rem;">Status: 200 OK</span>
+            </div>
+          </div>
+          <pre class="json-preview" id="jsonPreview">{}</pre>
+
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
