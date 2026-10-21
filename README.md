@@ -1,4 +1,4 @@
-# 🛡️ AuraHealth · Insurance Premium Category Predictor
+# AuraHealth - Insurance Premium Category Predictor
 
 [![Python](https://img.shields.io/badge/Python-3.11.9-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.121.0-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
@@ -6,99 +6,99 @@
 [![Pydantic](https://img.shields.io/badge/Pydantic-v2-E92063?style=for-the-badge&logo=pydantic&logoColor=white)](https://docs.pydantic.dev/)
 [![Render](https://img.shields.io/badge/Render-Deployed-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://render.com/)
 
-An end-to-end Machine Learning web application that predicts health insurance premium risk categories (**Low**, **Medium**, **High**) based on client biometrics, lifestyle factors, city demographics, and income.
+An enterprise Machine Learning web application designed to evaluate and predict health insurance premium risk categories (**Low**, **Medium**, **High**) based on client biometrics, lifestyle indicators, geographic tiers, and income metrics.
 
-Built with a high-performance **FastAPI** backend, **Scikit-Learn** inference engine, and an ultra-modern, minimalist **Glassmorphism Web Interface** with live biometric calculators and morphing visuals.
+The system utilizes a high-throughput **FastAPI** backend, a **Scikit-Learn** inference pipeline, and a modern **Glassmorphism Web Interface** with real-time biometric calculations.
 
 ---
 
-## 🏛️ System Architecture
+## System Architecture
 
 ```mermaid
 flowchart TB
-    subgraph Client ["🖥️ Client Layer"]
-        A["Browser / User"] --> B["Glassmorphism Web UI\n(HTML5 / CSS3 / Vanilla JS)"]
+    subgraph Client ["Client Layer"]
+        A["Browser / Client Application"] --> B["Glassmorphism Web UI\n(HTML5 / CSS3 / Vanilla JS)"]
         A -.-> S["Streamlit UI (Optional)\nfrontend.py"]
     end
 
-    subgraph Server ["⚡ FastAPI Application (app.py)"]
+    subgraph Server ["FastAPI Application (app.py)"]
         B -->|"HTTP GET /"| Static["Static Files & HTML Router\n(static/index.html)"]
         B -->|"HTTP POST /predict\n(JSON Payload)"| API["Predict Endpoint\n@app.post('/predict')"]
         S -.->|"HTTP POST /predict"| API
         
         API --> CORS["CORSMiddleware\n(Cross-Origin Handling)"]
-        CORS --> Pydantic["Pydantic UserInput Model\n(Validation & Computed Fields)"]
+        CORS --> Pydantic["Pydantic UserInput Model\n(Validation & Computed Properties)"]
     end
 
-    subgraph FeatureEng ["🧠 Feature Engineering & ML Pipeline"]
-        Pydantic -->|"Compute BMI"| F1["BMI = weight / (height²)"]
-        Pydantic -->|"Compute Age Group"| F2["young / adult / middle_aged / senior"]
-        Pydantic -->|"Compute Risk"| F3["Lifestyle Risk: low / medium / high"]
-        Pydantic -->|"Compute Tier"| F4["City Tier: 1 / 2 / 3"]
+    subgraph FeatureEng ["Feature Engineering & ML Pipeline"]
+        Pydantic -->|"Calculate BMI"| F1["BMI = weight / (height²)"]
+        Pydantic -->|"Derive Age Group"| F2["young / adult / middle_aged / senior"]
+        Pydantic -->|"Determine Risk"| F3["Lifestyle Risk: low / medium / high"]
+        Pydantic -->|"Map City Tier"| F4["City Tier: 1 / 2 / 3"]
         
-        F1 & F2 & F3 & F4 --> DFPipeline["Pandas DataFrame Row Builder"]
-        DFPipeline --> Model["Trained ML Classifier\n(model.pkl via Scikit-Learn)"]
+        F1 & F2 & F3 & F4 --> DFPipeline["Pandas Feature Record Builder"]
+        DFPipeline --> Model["Trained Classification Pipeline\n(model.pkl via Scikit-Learn)"]
     end
 
-    subgraph Response ["📊 Output & Visualization"]
-        Model -->|"Class Prediction"| JSON["JSONResponse\n{ predicted_category, bmi }"]
+    subgraph Response ["Output & Presentation"]
+        Model -->|"Inference Output"| JSON["JSONResponse\n{ predicted_category, bmi }"]
         JSON --> B
-        B --> Card["Dynamic Neon Glow Risk Badge\n(Emerald / Amber / Rose)"]
+        B --> Card["Dynamic Risk Tier Visual Display\n(Low: Green, Medium: Amber, High: Red)"]
     end
 ```
 
 ---
 
-## ✨ Key Features
+## Key Features
 
-- **Minimalist Glassmorphism Aesthetic:** Modern frosted glass design with dynamic blur (`backdrop-filter`), subtle borders, glowing neon indicators, and ambient morphing gradient backgrounds.
-- **3D Morphing Hero Card:** Visual showcasing AI health telemetry with interactive mouse-tracking 3D parallax tilt.
-- **Real-Time Biometric Calculator:** As users move the sliders, the UI dynamically computes and previews **BMI**, **BMI Category chip** (Normal, Overweight, Obese), **Lifestyle Risk**, and **City Tier** without needing a page refresh.
-- **Synced Range Sliders & Inputs:** Intuitive dual-input controls for Age, Weight, Height, and Annual Income.
-- **Robust Schema Validation:** Powered by **Pydantic v2** with field constraints (`gt`, `lt`), computed properties, and occupation literals.
-- **City Tier Resolution:** Automatically maps Indian cities into Tier 1 (Metros), Tier 2, or Tier 3 for accurate geographic risk modeling.
-- **Single-Server Deployment:** FastAPI serves both the static web frontend and the REST API from a single lightweight process.
+- **Minimalist Glassmorphism Interface:** Structured using modern CSS backdrop filters, translucent surface panels, responsive layouts, and ambient gradient depth.
+- **Interactive 3D Perspective Card:** Visual asset featuring mouse-tracking perspective transforms.
+- **Client-Side Biometric Computation:** Dynamically computes and displays Body Mass Index (BMI), clinical weight status (Underweight, Normal, Overweight, Obese), and lifestyle risk classification in real time during input adjustments.
+- **Synchronized Controls:** Coordinated numerical badges and range sliders across age, weight, height, and annual income fields.
+- **Data Validation & Type Safety:** Enforced via Pydantic v2 schemas with value boundaries (`gt`, `lt`), computed properties, and enumerated occupation classes.
+- **Geographic Tier Normalization:** Automatically maps Indian municipalities into standardized risk tiers (Tier 1 Metros, Tier 2 Urban Centers, Tier 3 Regional).
+- **Unified Service Architecture:** FastAPI concurrently manages static asset delivery and REST API routing within a single asynchronous process.
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```text
 Insurance-Premium-Predictor/
-├── .gitignore               # Ignored files (pycache, envs, checkpoints)
-├── .python-version          # Pinned to Python 3.11.9 for cloud build stability
-├── app.py                   # Main FastAPI server, static file router & ML inference
-├── fastapi_ml_model.ipynb   # Model training & exploratory data analysis notebook
-├── frontend.py              # Alternative Streamlit dashboard with glassmorphism theme
-├── insurance.csv            # Training & validation dataset
-├── model.pkl                # Trained scikit-learn classification model pipeline
-├── requirements.txt         # Optimized production runtime dependencies
+├── .gitignore               # Version control exclusions
+├── .python-version          # Pinned to Python 3.11.9 for runtime consistency
+├── app.py                   # FastAPI service, static router, and ML inference
+├── fastapi_ml_model.ipynb   # Model training and data exploration notebook
+├── frontend.py              # Streamlit dashboard implementation
+├── insurance.csv            # Reference dataset
+├── model.pkl                # Serialized Scikit-Learn classification model
+├── requirements.txt         # Production dependencies
 ├── static/
-│   ├── app.js               # Client-side validation, live calculations & async fetch
-│   ├── hero.jpg             # High-resolution 3D health intelligence visual asset
-│   ├── index.html           # Modern glassmorphism HTML structure
-│   └── style.css            # Custom CSS3 styles, glass panels & animations
-└── README.md                # Project documentation & architecture
+│   ├── app.js               # Client validation, calculation logic, and fetch handler
+│   ├── hero.jpg             # Technical visual asset
+│   ├── index.html           # Primary web interface structure
+│   └── style.css            # Component styles and glassmorphism definitions
+└── README.md                # System documentation
 ```
 
 ---
 
-## 🔌 API Reference
+## API Reference
 
-### 1. Web Interface
+### 1. Web Application
 - **Endpoint:** `GET /`
-- **Description:** Returns the glassmorphism frontend application (`static/index.html`).
+- **Description:** Serves the primary web interface (`static/index.html`).
 
-### 2. Interactive Documentation
+### 2. Documentation Endpoints
 - **Swagger UI:** `GET /docs`
 - **ReDoc:** `GET /redoc`
 - **OpenAPI Schema:** `GET /openapi.json`
 
-### 3. Predict Premium Category
+### 3. Risk Inference
 - **Endpoint:** `POST /predict`
 - **Content-Type:** `application/json`
 
-#### Request Body
+#### Request Schema
 ```json
 {
   "age": 30,
@@ -114,15 +114,15 @@ Insurance-Premium-Predictor/
 #### Field Specifications
 | Parameter | Type | Validation Rules | Description |
 |---|---|---|---|
-| `age` | `integer` | `1 <= age < 120` | Age of client in years |
+| `age` | `integer` | `1 <= age < 120` | Age of applicant in years |
 | `weight` | `float` | `weight > 0` | Body weight in kilograms |
 | `height` | `float` | `0 < height < 2.5` | Body height in meters |
-| `income_lpa` | `float` | `income_lpa > 0` | Annual income in ₹ Lakhs Per Annum |
-| `smoker` | `boolean` | `true` or `false` | Smoking status |
-| `city` | `string` | Free text | City name (e.g. Mumbai, Delhi, Jaipur) |
+| `income_lpa` | `float` | `income_lpa > 0` | Annual income in Lakhs Per Annum (INR) |
+| `smoker` | `boolean` | `true` or `false` | Tobacco consumption status |
+| `city` | `string` | String | City name (e.g., Mumbai, Delhi, Jaipur) |
 | `occupation` | `string` | Enum / Literal | `private_job`, `government_job`, `business_owner`, `freelancer`, `student`, `retired`, `unemployed` |
 
-#### Successful Response (`200 OK`)
+#### Response Schema (`200 OK`)
 ```json
 {
   "predicted_category": "Low",
@@ -132,7 +132,7 @@ Insurance-Premium-Predictor/
 
 ---
 
-## 🚀 How to Run Locally
+## Local Development Setup
 
 ### 1. Clone the Repository
 ```bash
@@ -140,7 +140,7 @@ git clone https://github.com/kumarsahup07/Insurance-Premium-Predictor.git
 cd Insurance-Premium-Predictor
 ```
 
-### 2. Create and Activate a Virtual Environment
+### 2. Configure Virtual Environment
 ```bash
 # Windows (PowerShell)
 python -m venv venv
@@ -156,54 +156,53 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. Start the Application
-Run the FastAPI application with Uvicorn:
+### 4. Execute the Application
+Launch the Uvicorn ASGI server:
 ```bash
 uvicorn app:app --reload
 ```
 
-Open your browser and navigate to:
-- 🌐 **Web App:** [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-- 📖 **Interactive API Docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+Access points:
+- Web Application: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+- Interactive API Documentation: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ---
 
-## ☁️ Deployment Guide (Render)
+## Cloud Deployment (Render)
 
-This repository includes a pinned `.python-version` (3.11.9) and minimal `requirements.txt` pre-configured for **[Render](https://render.com/)**:
+The application includes `.python-version` configured to Python 3.11.9 and a streamlined `requirements.txt` to enable pre-compiled binary installation without source compilation requirements.
 
 ```mermaid
 flowchart LR
-    A["GitHub Repository\n(main branch)"] -->|"Webhook Push"| B["Render Cloud\nBuild Environment"]
-    B -->|"Reads .python-version"| C["Selects Python 3.11.9"]
-    C -->|"pip install -r requirements.txt"| D["Installs Pre-built Wheels\n(No CMake / C++ needed)"]
-    D -->|"uvicorn app:app --host 0.0.0.0 --port $PORT"| E["🚀 Live Web Service\n(HTTPS URL)"]
+    A["GitHub Repository\n(main branch)"] -->|"Webhook Trigger"| B["Render Build Environment"]
+    B -->|"Read .python-version"| C["Initialize Python 3.11.9"]
+    C -->|"pip install -r requirements.txt"| D["Install Pre-compiled Wheels"]
+    D -->|"uvicorn app:app --host 0.0.0.0 --port $PORT"| E["Production Web Service"]
 ```
 
-### Render Deployment Steps:
-1. Log in to **[Render Dashboard](https://dashboard.render.com/)**.
-2. Click **New +** $\rightarrow$ **Web Service**.
-3. Select your GitHub repository: `kumarsahup07/Insurance-Premium-Predictor`.
-4. Fill in the service configuration:
+### Deployment Configuration:
+1. Navigate to the **Render Dashboard** (`dashboard.render.com`).
+2. Create a new **Web Service** and connect repository `kumarsahup07/Insurance-Premium-Predictor`.
+3. Provide the following operational settings:
    - **Environment:** `Python 3`
    - **Build Command:** `pip install -r requirements.txt`
    - **Start Command:** `uvicorn app:app --host 0.0.0.0 --port $PORT`
    - **Instance Type:** `Free`
-5. Click **Deploy Web Service**. Your service will be live in ~20 seconds.
+4. Select **Deploy Web Service**.
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
-- **Framework:** [FastAPI](https://fastapi.tiangolo.com/)
+- **Application Framework:** [FastAPI](https://fastapi.tiangolo.com/)
 - **Server:** [Uvicorn](https://www.uvicorn.org/) (ASGI)
 - **Data Validation:** [Pydantic v2](https://docs.pydantic.dev/)
-- **Machine Learning:** [Scikit-Learn](https://scikit-learn.org/), [NumPy](https://numpy.org/), [Pandas](https://pandas.pydata.org/)
-- **Frontend:** Vanilla HTML5, Modern CSS3 (Glassmorphism, CSS Variables, Flexbox/Grid), Vanilla JavaScript ES6+
-- **Alternative UI:** [Streamlit](https://streamlit.io/)
-- **Hosting:** [Render Cloud](https://render.com/)
+- **Machine Learning & Data Processing:** [Scikit-Learn](https://scikit-learn.org/), [NumPy](https://numpy.org/), [Pandas](https://pandas.pydata.org/)
+- **Frontend Architecture:** Vanilla HTML5, Modern CSS3 (Glassmorphism, CSS Custom Properties, Grid/Flexbox), Vanilla JavaScript (ES6+)
+- **Alternative Interface:** [Streamlit](https://streamlit.io/)
+- **Cloud Infrastructure:** [Render](https://render.com/)
 
 ---
 
-## 📄 License
-This project is open-source and available under the **MIT License**.
+## License
+This project is open-source and distributed under the **MIT License**.
